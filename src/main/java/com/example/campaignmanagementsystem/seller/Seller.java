@@ -1,22 +1,21 @@
-package com.example.campaignmanagementsystem.seller.model;
+package com.example.campaignmanagementsystem.seller;
 
-import com.example.campaignmanagementsystem.account.model.Account;
-import com.example.campaignmanagementsystem.product.model.Product;
+import com.example.campaignmanagementsystem.account.Account;
+import com.example.campaignmanagementsystem.product.Product;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "campaign")
+@Table(name = "seller")
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Seller {
 
     @Id
@@ -33,10 +32,4 @@ public class Seller {
 
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Product> products;
-
-    @Builder
-    public Seller(String name, Account account) {
-        this.name = name;
-        this.account = account;
-    }
 }

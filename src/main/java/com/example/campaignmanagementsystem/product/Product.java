@@ -1,12 +1,9 @@
-package com.example.campaignmanagementsystem.product.model;
+package com.example.campaignmanagementsystem.product;
 
-import com.example.campaignmanagementsystem.campaign.model.Campaign;
-import com.example.campaignmanagementsystem.seller.model.Seller;
+import com.example.campaignmanagementsystem.campaign.Campaign;
+import com.example.campaignmanagementsystem.seller.Seller;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,6 +13,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -31,11 +30,4 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Campaign> campaigns;
-
-    @Builder
-    public Product(String name, Seller seller) {
-        this.name = name;
-        this.seller = seller;
-    }
-
 }

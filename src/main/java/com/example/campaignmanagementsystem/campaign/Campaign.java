@@ -1,15 +1,15 @@
-package com.example.campaignmanagementsystem.campaign.model;
+package com.example.campaignmanagementsystem.campaign;
 
-import com.example.campaignmanagementsystem.product.model.Product;
+import com.example.campaignmanagementsystem.keyword.Keyword;
+import com.example.campaignmanagementsystem.location.Location;
+import com.example.campaignmanagementsystem.product.Product;
+import com.example.campaignmanagementsystem.seller.Seller;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -17,6 +17,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Campaign {
 
     @Id
@@ -43,9 +45,10 @@ public class Campaign {
     @Column(name = "status", nullable = false)
     private CampaignStatus status;
 
-    @NotBlank(message = "Town is mandatory")
-    @Column(name = "town", nullable = false)
-    private String town;
+    @NotNull(message = "Location is mandatory")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "location_id", nullable = false)
+    private Location location;
 
     @NotNull(message = "Radius is mandatory")
     @Min(value = 1, message = "Radius must be at least 1 km")
@@ -53,27 +56,16 @@ public class Campaign {
     private Integer radius;
 
     @NotEmpty(message = "At least one keyword is required")
-    @ElementCollection
-    @CollectionTable(name = "campaign_keywords", joinColumns = @JoinColumn(name = "campaign_id"))
-    @Column(name = "keyword", nullable = false)
-    private List<@NotBlank(message = "Keyword cannot be blank") String> keywords;
+    @ManyToMany
+    private Set<Keyword> keywords;
 
     @NotNull(message = "Product is mandatory")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @Builder
-    public Campaign(String name, BigDecimal bidAmount, BigDecimal campaignFund,
-                    CampaignStatus status, Integer radius, String town, List<String> keywords,
-                    Product product) {
-        this.name = name;
-        this.bidAmount = bidAmount;
-        this.campaignFund = campaignFund;
-        this.status = status;
-        this.radius = radius;
-        this.town = town;
-        this.keywords = keywords;
-        this.product = product;
-    }
+    @NotNull(message = "Seller is mandatory")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seller_id", nullable = false)
+    private Seller seller;
 }
