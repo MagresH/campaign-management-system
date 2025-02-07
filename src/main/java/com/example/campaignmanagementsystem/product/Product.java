@@ -3,7 +3,10 @@ package com.example.campaignmanagementsystem.product;
 import com.example.campaignmanagementsystem.campaign.Campaign;
 import com.example.campaignmanagementsystem.seller.Seller;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.UUID;
@@ -12,9 +15,8 @@ import java.util.UUID;
 @Table(name = "product")
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@NoArgsConstructor
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -30,4 +32,46 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Campaign> campaigns;
+
+    public static ProductBuilder builder() {
+        return new ProductBuilder();
+    }
+
+    public static class ProductBuilder {
+        private UUID id;
+        private String name;
+        private Seller seller;
+        private List<Campaign> campaigns;
+
+        ProductBuilder() {
+        }
+
+        public ProductBuilder id(UUID id) {
+            this.id = id;
+            return this;
+        }
+
+        public ProductBuilder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public ProductBuilder seller(Seller seller) {
+            this.seller = seller;
+            return this;
+        }
+
+        public ProductBuilder campaigns(List<Campaign> campaigns) {
+            this.campaigns = campaigns;
+            return this;
+        }
+
+        public Product build() {
+            return new Product(this.id, this.name, this.seller, this.campaigns);
+        }
+
+        public String toString() {
+            return "Product.ProductBuilder(id=" + this.id + ", name=" + this.name + ", seller=" + this.seller + ", campaigns=" + this.campaigns + ")";
+        }
+    }
 }
