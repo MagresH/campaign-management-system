@@ -39,6 +39,7 @@ public class AccountServiceImplTest {
 
         seller = Seller.builder()
                 .id(sellerId)
+                .name("Seller")
                 .account(account)
                 .build();
     }

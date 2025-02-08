@@ -15,3 +15,8 @@ spring:
   h2:
     console:
       enabled: true
+springdoc:
+  swagger-ui:
+    enabled: true
+#    configUrl: /v3/api-docs/swagger-config
+    path: /swagger-ui.html
