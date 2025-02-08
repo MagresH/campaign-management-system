@@ -44,16 +44,14 @@ public class CampaignServiceImpl implements CampaignService {
 
     @Transactional
     public CampaignResponse createCampaign(CreateCampaignRequest request) {
-        SellerDTO seller = sellerService.getSellerById(request.sellerId())
-                .orElseThrow(() -> new EntityNotFoundException("Seller not found"));
+        SellerDTO seller = sellerService.getSellerById(request.sellerId());
 
-        ProductDTO product = productService.getProductById(request.productId())
-                .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+        ProductDTO product = productService.getProductById(request.productId());
 
-        LocationDTO location = locationService.getLocationByTown(request.town())
-                .orElseThrow(() -> new EntityNotFoundException("City not found"));
+        LocationDTO location = locationService.getLocationByTown(request.town());
 
         BigDecimal campaignFund = request.campaignFund();
+
         UUID sellerId = seller.id();
 
         if (!accountService.hasSufficientFunds(sellerId, campaignFund)) {
@@ -91,21 +89,18 @@ public class CampaignServiceImpl implements CampaignService {
 
         SellerDTO seller = null;
         if (request.getSellerId() != null) {
-            seller = sellerService.getSellerById(request.getSellerId())
-                    .orElseThrow(() -> new EntityNotFoundException("Seller not found"));
+            seller = sellerService.getSellerById(request.getSellerId());
             existingCampaign.setSeller(sellerMapper.toEntity(seller));
         }
 
         ProductDTO product = null;
         if (request.getProductId() != null) {
-            product = productService.getProductById(request.getProductId())
-                    .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+            product = productService.getProductById(request.getProductId());
             existingCampaign.setProduct(productMapper.toEntity(product));
         }
 
         if (request.getTown() != null && !request.getTown().isBlank()) {
-            LocationDTO location = locationService.getLocationByTown(request.getTown())
-                    .orElseThrow(() -> new EntityNotFoundException("City not found"));
+            LocationDTO location = locationService.getLocationByTown(request.getTown());
             existingCampaign.setLocation(locationMapper.toEntity(location));
         }
 

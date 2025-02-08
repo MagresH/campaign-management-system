@@ -18,11 +18,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
 import java.math.BigDecimal;
 import java.util.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -156,13 +162,13 @@ public class CampaignServiceImplTest {
                 "Seller"
         );
 
-        when(sellerService.getSellerById(sellerId)).thenReturn(Optional.of(seller));
+        when(sellerService.getSellerById(sellerId)).thenReturn(seller);
 
         ProductDTO product = new ProductDTO(
                 productId,
                 "Product"
         );
-        when(productService.getProductById(productId)).thenReturn(Optional.of(product));
+        when(productService.getProductById(productId)).thenReturn(product);
 
         when(accountService.hasSufficientFunds(sellerId, request.campaignFund())).thenReturn(true);
         doNothing().when(accountService).withdraw(sellerId, request.campaignFund());
@@ -171,7 +177,7 @@ public class CampaignServiceImplTest {
         when(keywordService.findOrCreateByValue("keyword1")).thenReturn(keyword);
 
         LocationDTO location = new LocationDTO(UUID.randomUUID(), "Warsaw");
-        when(locationService.getLocationByTown("Warsaw")).thenReturn(Optional.of(location));
+        when(locationService.getLocationByTown("Warsaw")).thenReturn(location);
 
         when(campaignRepository.save(any(Campaign.class))).thenAnswer(invocation -> {
             Campaign campaign = invocation.getArgument(0);
