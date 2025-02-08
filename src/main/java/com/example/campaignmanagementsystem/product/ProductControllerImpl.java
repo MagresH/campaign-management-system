@@ -2,7 +2,6 @@ package com.example.campaignmanagementsystem.product;
 
 import com.example.campaignmanagementsystem.api.V1.ProductController;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,8 +14,8 @@ import java.util.UUID;
 public class ProductControllerImpl implements ProductController {
     private final ProductService productService;
 
-    public ResponseEntity<ProductDTO> createProduct(ProductDTO productDTO) {
-        ProductDTO createdProduct = productService.createProduct(productDTO);
+    public ResponseEntity<ProductDTO> createProductForSeller(UUID sellerId, ProductDTO productDTO) {
+        ProductDTO createdProduct = productService.createProductForSeller(sellerId, productDTO);
         return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
     }
 

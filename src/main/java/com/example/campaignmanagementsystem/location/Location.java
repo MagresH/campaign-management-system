@@ -2,7 +2,6 @@ package com.example.campaignmanagementsystem.location;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
@@ -10,7 +9,6 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "location")
-@Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,6 +23,14 @@ public class Location {
 
     public static LocationBuilder builder() {
         return new LocationBuilder();
+    }
+
+    public UUID getId() {
+        return this.id;
+    }
+
+    public String getTown() {
+        return this.town;
     }
 
     public static class LocationBuilder {

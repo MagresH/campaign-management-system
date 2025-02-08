@@ -66,6 +66,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Transactional(readOnly = true)
+    public Product getProductEntityById(UUID productId) {
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found with ID: " + productId));
+    }
+
+    @Transactional(readOnly = true)
     public List<ProductDTO> getProductsBySellerId(UUID sellerId) {
         Seller seller = sellerRepository.findById(sellerId)
                 .orElseThrow(() -> new EntityNotFoundException("Seller not found with ID: " + sellerId));
@@ -75,6 +81,18 @@ public class ProductServiceImpl implements ProductService {
         return products.stream()
                 .map(productMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public ProductDTO createProductForSeller(UUID sellerId, ProductDTO productDTO) {
+        Seller seller = sellerRepository.findById(sellerId)
+                .orElseThrow(() -> new EntityNotFoundException("Seller not found with ID: " + sellerId));
+
+        Product product = productMapper.toEntity(productDTO);
+        product.setSeller(seller);
+
+        Product savedProduct = productRepository.save(product);
+        return productMapper.toDto(savedProduct);
     }
 
 }

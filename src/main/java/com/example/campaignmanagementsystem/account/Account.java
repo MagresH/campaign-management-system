@@ -7,7 +7,6 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
@@ -17,7 +16,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "account")
 @Setter
-@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Account {
@@ -39,6 +37,18 @@ public class Account {
 
     public static AccountBuilder builder() {
         return new AccountBuilder();
+    }
+
+    public UUID getId() {
+        return this.id;
+    }
+
+    public @NotNull(message = "Balance is mandatory") @DecimalMin(value = "0.00", message = "Balance cannot be negative") @Digits(integer = 15, fraction = 2, message = "Balance must have up to 15 digits and 2 decimals") BigDecimal getBalance() {
+        return this.balance;
+    }
+
+    public Seller getSeller() {
+        return this.seller;
     }
 
     public static class AccountBuilder {

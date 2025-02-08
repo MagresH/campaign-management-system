@@ -9,6 +9,8 @@ public interface LocationService {
 
     LocationDTO getLocationByTown(String town);
 
+    Location getLocationEntityByTown(String town);
+
     LocationDTO getLocationById(UUID locationId);
 
     LocationDTO createLocation(LocationDTO locationDTO);

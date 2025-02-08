@@ -2,7 +2,6 @@ package com.example.campaignmanagementsystem.keyword;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
@@ -10,7 +9,6 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "keyword")
-@Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,6 +28,14 @@ public class Keyword {
 
     public static KeywordBuilder builder() {
         return new KeywordBuilder();
+    }
+
+    public UUID getId() {
+        return this.id;
+    }
+
+    public String getText() {
+        return this.text;
     }
 
     public static class KeywordBuilder {

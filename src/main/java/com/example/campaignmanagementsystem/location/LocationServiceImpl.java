@@ -20,6 +20,11 @@ public class LocationServiceImpl implements LocationService {
                 .orElseThrow(() -> new EntityNotFoundException("Location not found"));
     }
 
+    public Location getLocationEntityByTown(String town) {
+        return locationRepository.findByTownIgnoreCase(town)
+                .orElseThrow(() -> new EntityNotFoundException("Location not found"));
+    }
+
     public List<String> getAllTowns() {
         return locationRepository.findAll()
                 .stream()

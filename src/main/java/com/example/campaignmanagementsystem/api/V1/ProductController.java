@@ -20,8 +20,8 @@ public interface ProductController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Product created")
     })
-    @PostMapping
-    ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO productDTO);
+    @PostMapping("/seller/{sellerId}")
+    ResponseEntity<ProductDTO> createProductForSeller(@PathVariable("sellerId") UUID sellerId, @RequestBody ProductDTO productDTO);
 
     @Operation(summary = "Update an existing product")
     @ApiResponses(value = {

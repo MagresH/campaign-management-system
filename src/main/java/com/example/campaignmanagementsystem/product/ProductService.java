@@ -13,5 +13,9 @@ public interface ProductService {
 
     ProductDTO getProductById(UUID productId);
 
+    Product getProductEntityById(UUID productId);
+
     List<ProductDTO> getProductsBySellerId(UUID sellerId);
+
+    ProductDTO createProductForSeller(UUID sellerId, ProductDTO productDTO);
 }

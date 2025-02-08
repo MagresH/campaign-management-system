@@ -5,7 +5,6 @@ import com.example.campaignmanagementsystem.product.Product;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
@@ -14,7 +13,6 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "seller")
-@Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -38,6 +36,22 @@ public class Seller {
 
     public static SellerBuilder builder() {
         return new SellerBuilder();
+    }
+
+    public UUID getId() {
+        return this.id;
+    }
+
+    public @NotBlank(message = "Seller name is mandatory") String getName() {
+        return this.name;
+    }
+
+    public Account getAccount() {
+        return this.account;
+    }
+
+    public List<Product> getProducts() {
+        return this.products;
     }
 
     public static class SellerBuilder {

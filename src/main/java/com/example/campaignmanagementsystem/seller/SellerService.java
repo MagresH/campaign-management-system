@@ -10,5 +10,7 @@ public interface SellerService {
 
     SellerDTO getSellerById(UUID sellerId);
 
+    Seller getSellerEntityById(UUID sellerId);
+
     void deleteSeller(UUID sellerId);
 }

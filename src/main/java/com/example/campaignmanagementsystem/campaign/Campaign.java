@@ -151,4 +151,7 @@ public class Campaign {
             return "Campaign.CampaignBuilder(id=" + this.id + ", name=" + this.name + ", bidAmount=" + this.bidAmount + ", campaignFund=" + this.campaignFund + ", status=" + this.status + ", location=" + this.location + ", radius=" + this.radius + ", keywords=" + this.keywords + ", product=" + this.product + ", seller=" + this.seller + ")";
         }
     }
+    public String getTown() {
+        return location.getTown();
+    }
 }
