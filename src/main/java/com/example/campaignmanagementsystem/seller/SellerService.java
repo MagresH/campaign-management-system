@@ -1,5 +1,6 @@
 package com.example.campaignmanagementsystem.seller;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public interface SellerService {
@@ -8,7 +9,7 @@ public interface SellerService {
 
     SellerDTO updateSeller(UUID sellerId, SellerDTO sellerDTO);
 
-    SellerDTO getSellerById(UUID sellerId);
+    Optional<SellerDTO> getSellerById(UUID sellerId);
 
     void deleteSeller(UUID sellerId);
 }

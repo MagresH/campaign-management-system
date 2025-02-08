@@ -1,6 +1,7 @@
 package com.example.campaignmanagementsystem.keyword;
 
 import java.util.List;
+import java.util.Set;
 
 public interface KeywordService {
 
@@ -8,5 +9,5 @@ public interface KeywordService {
 
     KeywordDTO findOrCreateByValue(String value);
 
-    List<Keyword> getAllKeywords();
+    Set<KeywordDTO> findOrCreateByValues(List<String> values);
 }
