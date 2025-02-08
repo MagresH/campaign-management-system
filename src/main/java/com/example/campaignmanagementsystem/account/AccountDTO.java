@@ -11,5 +11,7 @@ import java.util.UUID;
  * DTO for {@link Account}
  */
 public record AccountDTO(UUID id,
-                         @NotNull(message = "Balance is mandatory") @Digits(message = "Balance must have up to 15 digits and 2 decimals", integer = 15, fraction = 2) BigDecimal balance) implements Serializable {
+                         @NotNull(message = "Balance is mandatory") @Digits(message = "Balance must have up to 15 digits and 2 decimals", integer = 15, fraction = 2)
+                         BigDecimal balance
+) implements Serializable {
 }

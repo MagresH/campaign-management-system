@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -19,7 +20,7 @@ public interface SellerController {
             @ApiResponse(responseCode = "201", description = "Seller created")
     })
     @PostMapping
-    SellerDTO createSeller(@RequestBody SellerDTO sellerDTO);
+    ResponseEntity<SellerDTO> createSeller(@RequestBody SellerDTO sellerDTO);
 
     @Operation(summary = "Update an existing seller")
     @ApiResponses(value = {
@@ -27,7 +28,7 @@ public interface SellerController {
             @ApiResponse(responseCode = "404", description = "Seller not found")
     })
     @PutMapping("/{sellerId}")
-    SellerDTO updateSeller(@PathVariable UUID sellerId, @RequestBody SellerDTO sellerDTO);
+    ResponseEntity<SellerDTO> updateSeller(@PathVariable UUID sellerId, @RequestBody SellerDTO sellerDTO);
 
     @Operation(summary = "Get seller by ID")
     @ApiResponses(value = {
@@ -35,7 +36,7 @@ public interface SellerController {
             @ApiResponse(responseCode = "404", description = "Seller not found")
     })
     @GetMapping("/{sellerId}")
-    SellerDTO getSellerById(@PathVariable UUID sellerId);
+    ResponseEntity<SellerDTO> getSellerById(@PathVariable UUID sellerId);
 
     @Operation(summary = "Delete a seller")
     @ApiResponses(value = {
@@ -43,5 +44,5 @@ public interface SellerController {
             @ApiResponse(responseCode = "404", description = "Seller not found")
     })
     @DeleteMapping("/{sellerId}")
-    void deleteSeller(@PathVariable UUID sellerId);
+    ResponseEntity<Void> deleteSeller(@PathVariable UUID sellerId);
 }

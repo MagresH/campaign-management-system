@@ -4,6 +4,7 @@ import com.example.campaignmanagementsystem.seller.Seller;
 import com.example.campaignmanagementsystem.seller.SellerRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
@@ -24,7 +26,6 @@ public class ProductServiceImpl implements ProductService {
         Product product = productMapper.toEntity(productDTO);
 
         Product savedProduct = productRepository.save(product);
-
         return productMapper.toDto(savedProduct);
     }
 

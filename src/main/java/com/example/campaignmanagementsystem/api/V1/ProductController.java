@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public interface ProductController {
             @ApiResponse(responseCode = "201", description = "Product created")
     })
     @PostMapping
-    ProductDTO createProduct(@RequestBody ProductDTO productDTO);
+    ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO productDTO);
 
     @Operation(summary = "Update an existing product")
     @ApiResponses(value = {
@@ -28,7 +29,7 @@ public interface ProductController {
             @ApiResponse(responseCode = "404", description = "Product not found")
     })
     @PutMapping("/{productId}")
-    ProductDTO updateProduct(@PathVariable UUID productId, @RequestBody ProductDTO productDTO);
+    ResponseEntity<ProductDTO> updateProduct(@PathVariable UUID productId, @RequestBody ProductDTO productDTO);
 
     @Operation(summary = "Delete a product")
     @ApiResponses(value = {
@@ -36,7 +37,7 @@ public interface ProductController {
             @ApiResponse(responseCode = "404", description = "Product not found")
     })
     @DeleteMapping("/{productId}")
-    void deleteProduct(@PathVariable UUID productId);
+    ResponseEntity<Void> deleteProduct(@PathVariable UUID productId);
 
     @Operation(summary = "Get product by ID")
     @ApiResponses(value = {
@@ -44,12 +45,12 @@ public interface ProductController {
             @ApiResponse(responseCode = "404", description = "Product not found")
     })
     @GetMapping("/{productId}")
-    ProductDTO getProductById(@PathVariable UUID productId);
+    ResponseEntity<ProductDTO> getProductById(@PathVariable UUID productId);
 
     @Operation(summary = "Get products by seller ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of seller's products retrieved")
     })
     @GetMapping("/seller/{sellerId}")
-    List<ProductDTO> getProductsBySellerId(@PathVariable UUID sellerId);
+    ResponseEntity<List<ProductDTO>> getProductsBySellerId(@PathVariable UUID sellerId);
 }

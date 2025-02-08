@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public interface LocationController {
             @ApiResponse(responseCode = "200", description = "List of towns retrieved")
     })
     @GetMapping("/towns")
-    List<String> getAllTowns();
+    ResponseEntity<List<String>> getAllTowns();
 
     @Operation(summary = "Get location by town name")
     @ApiResponses(value = {
@@ -28,7 +29,7 @@ public interface LocationController {
             @ApiResponse(responseCode = "404", description = "Town not found")
     })
     @GetMapping("/town")
-    LocationDTO getLocationByTown(@RequestParam String town);
+    ResponseEntity<LocationDTO> getLocationByTown(@RequestParam String town);
 
     @Operation(summary = "Get location by ID")
     @ApiResponses(value = {
@@ -36,14 +37,14 @@ public interface LocationController {
             @ApiResponse(responseCode = "404", description = "Location not found")
     })
     @GetMapping("/{locationId}")
-    LocationDTO getLocationById(@PathVariable UUID locationId);
+    ResponseEntity<LocationDTO> getLocationById(@PathVariable UUID locationId);
 
     @Operation(summary = "Create a new location")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Location created")
     })
     @PostMapping
-    LocationDTO createLocation(@RequestBody LocationDTO locationDTO);
+    ResponseEntity<LocationDTO> createLocation(@RequestBody LocationDTO locationDTO);
 
     @Operation(summary = "Update an existing location")
     @ApiResponses(value = {
@@ -51,7 +52,7 @@ public interface LocationController {
             @ApiResponse(responseCode = "404", description = "Location not found")
     })
     @PutMapping("/{locationId}")
-    LocationDTO updateLocation(@PathVariable UUID locationId, @RequestBody LocationDTO locationDTO);
+    ResponseEntity<LocationDTO> updateLocation(@PathVariable UUID locationId, @RequestBody LocationDTO locationDTO);
 
     @Operation(summary = "Delete a location")
     @ApiResponses(value = {
@@ -59,5 +60,5 @@ public interface LocationController {
             @ApiResponse(responseCode = "404", description = "Location not found")
     })
     @DeleteMapping("/{locationId}")
-    void deleteLocation(@PathVariable UUID locationId);
+    ResponseEntity<Void> deleteLocation(@PathVariable UUID locationId);
 }

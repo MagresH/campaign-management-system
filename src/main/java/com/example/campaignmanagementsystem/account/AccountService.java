@@ -13,7 +13,7 @@ public interface AccountService {
 
     boolean hasSufficientFunds(UUID sellerId, BigDecimal amount);
 
-    Account createAccount(UUID sellerId, BigDecimal initialBalance);
+    AccountDTO createAccount(UUID sellerId, BigDecimal initialBalance);
 
     void deleteAccount(UUID sellerId);
 }

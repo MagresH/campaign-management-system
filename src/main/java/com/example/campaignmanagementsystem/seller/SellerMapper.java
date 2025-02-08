@@ -13,7 +13,6 @@ public interface SellerMapper {
 
     @Mapping(target = "id", source = "id")
     @Mapping(target = "name", source = "name")
-    // Ignore fields that are not in SellerDTO
     @Mapping(target = "account", ignore = true)
     @Mapping(target = "products", ignore = true)
     Seller toEntity(SellerDTO sellerDto);

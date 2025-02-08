@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,19 +21,19 @@ public interface KeywordController {
             @ApiResponse(responseCode = "200", description = "Keywords retrieved")
     })
     @GetMapping
-    List<String> getKeywordsByQuery(@RequestParam String query);
+    ResponseEntity<List<String>> getKeywordsByQuery(@RequestParam String query);
 
     @Operation(summary = "Find or create a keyword")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Keyword retrieved or created")
     })
     @PostMapping
-    KeywordDTO findOrCreateByValue(@RequestParam String value);
+    ResponseEntity<KeywordDTO> findOrCreateByValue(@RequestParam String value);
 
     @Operation(summary = "Find or create multiple keywords")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Keywords retrieved or created")
     })
     @PostMapping("/batch")
-    Set<KeywordDTO> findOrCreateByValues(@RequestBody List<String> values);
+    ResponseEntity<Set<KeywordDTO>> findOrCreateByValues(@RequestBody List<String> values);
 }

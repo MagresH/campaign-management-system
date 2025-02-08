@@ -2,6 +2,9 @@ package com.example.campaignmanagementsystem.product;
 
 import com.example.campaignmanagementsystem.api.V1.ProductController;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -12,23 +15,28 @@ import java.util.UUID;
 public class ProductControllerImpl implements ProductController {
     private final ProductService productService;
 
-    public ProductDTO createProduct(ProductDTO productDTO) {
-        return productService.createProduct(productDTO);
+    public ResponseEntity<ProductDTO> createProduct(ProductDTO productDTO) {
+        ProductDTO createdProduct = productService.createProduct(productDTO);
+        return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
     }
 
-    public ProductDTO updateProduct(UUID productId, ProductDTO productDTO) {
-        return productService.updateProduct(productId, productDTO);
+    public ResponseEntity<ProductDTO> updateProduct(UUID productId, ProductDTO productDTO) {
+        ProductDTO updatedProduct = productService.updateProduct(productId, productDTO);
+        return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
     }
 
-    public void deleteProduct(UUID productId) {
+    public ResponseEntity<Void> deleteProduct(UUID productId) {
         productService.deleteProduct(productId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    public ProductDTO getProductById(UUID productId) {
-        return productService.getProductById(productId);
+    public ResponseEntity<ProductDTO> getProductById(UUID productId) {
+        ProductDTO product = productService.getProductById(productId);
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-    public List<ProductDTO> getProductsBySellerId(UUID sellerId) {
-        return productService.getProductsBySellerId(sellerId);
+    public ResponseEntity<List<ProductDTO>> getProductsBySellerId(UUID sellerId) {
+        List<ProductDTO> products = productService.getProductsBySellerId(sellerId);
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 }

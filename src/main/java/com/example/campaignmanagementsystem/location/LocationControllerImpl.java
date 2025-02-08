@@ -2,6 +2,8 @@ package com.example.campaignmanagementsystem.location;
 
 import com.example.campaignmanagementsystem.api.V1.LocationController;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -12,27 +14,33 @@ import java.util.UUID;
 public class LocationControllerImpl implements LocationController {
     private final LocationService locationService;
 
-    public List<String> getAllTowns() {
-        return locationService.getAllTowns();
+    public ResponseEntity<List<String>> getAllTowns() {
+        List<String> towns = locationService.getAllTowns();
+        return new ResponseEntity<>(towns, HttpStatus.OK);
     }
 
-    public LocationDTO getLocationByTown(String town) {
-        return locationService.getLocationByTown(town);
+    public ResponseEntity<LocationDTO> getLocationByTown(String town) {
+        LocationDTO location = locationService.getLocationByTown(town);
+        return new ResponseEntity<>(location, HttpStatus.OK);
     }
 
-    public LocationDTO getLocationById(UUID locationId) {
-        return locationService.getLocationById(locationId);
+    public ResponseEntity<LocationDTO> getLocationById(UUID locationId) {
+        LocationDTO location = locationService.getLocationById(locationId);
+        return new ResponseEntity<>(location, HttpStatus.OK);
     }
 
-    public LocationDTO createLocation(LocationDTO locationDTO) {
-        return locationService.createLocation(locationDTO);
+    public ResponseEntity<LocationDTO> createLocation(LocationDTO locationDTO) {
+        LocationDTO createdLocation = locationService.createLocation(locationDTO);
+        return new ResponseEntity<>(createdLocation, HttpStatus.CREATED);
     }
 
-    public LocationDTO updateLocation(UUID locationId, LocationDTO locationDTO) {
-        return locationService.updateLocation(locationId, locationDTO);
+    public ResponseEntity<LocationDTO> updateLocation(UUID locationId, LocationDTO locationDTO) {
+        LocationDTO updatedLocation = locationService.updateLocation(locationId, locationDTO);
+        return new ResponseEntity<>(updatedLocation, HttpStatus.OK);
     }
 
-    public void deleteLocation(UUID locationId) {
+    public ResponseEntity<Void> deleteLocation(UUID locationId) {
         locationService.deleteLocation(locationId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

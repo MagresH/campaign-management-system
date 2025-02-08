@@ -18,6 +18,7 @@ import java.util.UUID;
 public class AccountServiceImpl implements AccountService {
 
     private final SellerRepository sellerRepository;
+    private final AccountMapper accountMapper;
 
     @Transactional(readOnly = true)
     public boolean hasSufficientFunds(UUID sellerId, BigDecimal amount) {
@@ -67,7 +68,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Transactional
-    public Account createAccount(UUID sellerId, BigDecimal initialBalance) {
+    public AccountDTO createAccount(UUID sellerId, BigDecimal initialBalance) {
         Seller seller = sellerRepository.findById(sellerId)
                 .orElseThrow(() -> new EntityNotFoundException("Seller not found"));
 
@@ -81,7 +82,7 @@ public class AccountServiceImpl implements AccountService {
         seller.setAccount(account);
 
         sellerRepository.save(seller);
-        return account;
+        return accountMapper.toDto(account);
     }
 
     @Transactional

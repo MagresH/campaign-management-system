@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -24,7 +25,7 @@ public interface CampaignController {
             @ApiResponse(responseCode = "400", description = "Invalid input data")
     })
     @PostMapping
-    CampaignResponse createCampaign(@RequestBody CreateCampaignRequest request);
+    ResponseEntity<CampaignResponse> createCampaign(@RequestBody CreateCampaignRequest request);
 
     @Operation(summary = "Update an existing campaign")
     @ApiResponses(value = {
@@ -32,7 +33,7 @@ public interface CampaignController {
             @ApiResponse(responseCode = "404", description = "Campaign not found")
     })
     @PutMapping("/{campaignId}")
-    CampaignResponse updateCampaign(@PathVariable UUID campaignId, @RequestBody UpdateCampaignRequest request);
+    ResponseEntity<CampaignResponse> updateCampaign(@PathVariable UUID campaignId, @RequestBody UpdateCampaignRequest request);
 
     @Operation(summary = "Delete a campaign")
     @ApiResponses(value = {
@@ -40,7 +41,7 @@ public interface CampaignController {
             @ApiResponse(responseCode = "404", description = "Campaign not found")
     })
     @DeleteMapping("/{campaignId}")
-    void deleteCampaign(@PathVariable UUID campaignId);
+    ResponseEntity<Void> deleteCampaign(@PathVariable UUID campaignId);
 
     @Operation(summary = "Get campaign by ID")
     @ApiResponses(value = {
@@ -48,19 +49,19 @@ public interface CampaignController {
             @ApiResponse(responseCode = "404", description = "Campaign not found")
     })
     @GetMapping("/{campaignId}")
-    CampaignResponse getCampaignById(@PathVariable UUID campaignId);
+    ResponseEntity<CampaignResponse> getCampaignById(@PathVariable UUID campaignId);
 
     @Operation(summary = "Get all campaigns")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of campaigns retrieved")
     })
     @GetMapping
-    Page<CampaignResponse> getAllCampaigns(Pageable pageable);
+    ResponseEntity<Page<CampaignResponse>> getAllCampaigns(Pageable pageable);
 
     @Operation(summary = "Get campaigns by seller ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of seller's campaigns retrieved")
     })
     @GetMapping("/seller/{sellerId}")
-    Page<CampaignResponse> getCampaignsBySellerId(@PathVariable UUID sellerId, Pageable pageable);
+    ResponseEntity<Page<CampaignResponse>> getCampaignsBySellerId(@PathVariable UUID sellerId, Pageable pageable);
 }

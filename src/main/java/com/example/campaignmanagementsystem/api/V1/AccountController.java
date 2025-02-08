@@ -1,10 +1,12 @@
 package com.example.campaignmanagementsystem.api.V1;
 
 import com.example.campaignmanagementsystem.account.Account;
+import com.example.campaignmanagementsystem.account.AccountDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -21,7 +23,7 @@ public interface AccountController {
             @ApiResponse(responseCode = "404", description = "Seller not found")
     })
     @GetMapping("/{sellerId}/balance")
-    BigDecimal getBalanceBySellerId(@PathVariable UUID sellerId);
+    ResponseEntity<BigDecimal> getBalanceBySellerId(@PathVariable UUID sellerId);
 
     @Operation(summary = "Deposit funds into seller's account")
     @ApiResponses(value = {
@@ -29,7 +31,7 @@ public interface AccountController {
             @ApiResponse(responseCode = "404", description = "Seller not found")
     })
     @PostMapping("/{sellerId}/deposit")
-    void deposit(@PathVariable UUID sellerId, @RequestParam BigDecimal amount);
+    ResponseEntity<Void> deposit(@PathVariable UUID sellerId, @RequestParam BigDecimal amount);
 
     @Operation(summary = "Withdraw funds from seller's account")
     @ApiResponses(value = {
@@ -38,7 +40,7 @@ public interface AccountController {
             @ApiResponse(responseCode = "400", description = "Insufficient funds")
     })
     @PostMapping("/{sellerId}/withdraw")
-    void withdraw(@PathVariable UUID sellerId, @RequestParam BigDecimal amount);
+    ResponseEntity<Void> withdraw(@PathVariable UUID sellerId, @RequestParam BigDecimal amount);
 
     @Operation(summary = "Check if seller has sufficient funds")
     @ApiResponses(value = {
@@ -46,14 +48,14 @@ public interface AccountController {
             @ApiResponse(responseCode = "404", description = "Seller not found")
     })
     @GetMapping("/{sellerId}/has-sufficient-funds")
-    boolean hasSufficientFunds(@PathVariable UUID sellerId, @RequestParam BigDecimal amount);
+    ResponseEntity<Boolean> hasSufficientFunds(@PathVariable UUID sellerId, @RequestParam BigDecimal amount);
 
     @Operation(summary = "Create an account for the seller")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Account created")
     })
     @PostMapping("/{sellerId}")
-    Account createAccount(@PathVariable UUID sellerId, @RequestParam BigDecimal initialBalance);
+    ResponseEntity<AccountDTO> createAccount(@PathVariable UUID sellerId, @RequestParam BigDecimal initialBalance);
 
     @Operation(summary = "Delete seller's account")
     @ApiResponses(value = {
@@ -61,5 +63,5 @@ public interface AccountController {
             @ApiResponse(responseCode = "404", description = "Seller not found")
     })
     @DeleteMapping("/{sellerId}")
-    void deleteAccount(@PathVariable UUID sellerId);
+    ResponseEntity<Void> deleteAccount(@PathVariable UUID sellerId);
 }
