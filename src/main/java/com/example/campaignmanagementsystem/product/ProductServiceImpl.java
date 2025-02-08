@@ -1,5 +1,6 @@
 package com.example.campaignmanagementsystem.product;
 
+import com.example.campaignmanagementsystem.exception.SellerNotFoundException;
 import com.example.campaignmanagementsystem.seller.Seller;
 import com.example.campaignmanagementsystem.seller.SellerRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -74,7 +75,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional(readOnly = true)
     public List<ProductDTO> getProductsBySellerId(UUID sellerId) {
         Seller seller = sellerRepository.findById(sellerId)
-                .orElseThrow(() -> new EntityNotFoundException("Seller not found with ID: " + sellerId));
+                .orElseThrow(() -> new SellerNotFoundException("Seller not found with ID: " + sellerId));
 
         List<Product> products = productRepository.findBySellerId(sellerId);
 
@@ -86,7 +87,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDTO createProductForSeller(UUID sellerId, ProductDTO productDTO) {
         Seller seller = sellerRepository.findById(sellerId)
-                .orElseThrow(() -> new EntityNotFoundException("Seller not found with ID: " + sellerId));
+                .orElseThrow(() -> new SellerNotFoundException("Seller not found with ID: " + sellerId));
 
         Product product = productMapper.toEntity(productDTO);
         product.setSeller(seller);

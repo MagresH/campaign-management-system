@@ -1,6 +1,7 @@
 package com.example.campaignmanagementsystem.account;
 
 import com.example.campaignmanagementsystem.exception.InsufficientFundsException;
+import com.example.campaignmanagementsystem.exception.SellerNotFoundException;
 import com.example.campaignmanagementsystem.seller.Seller;
 import com.example.campaignmanagementsystem.seller.SellerRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -29,7 +30,7 @@ public class AccountServiceImpl implements AccountService {
     @Transactional(readOnly = true)
     public BigDecimal getBalanceBySellerId(UUID sellerId) {
         Seller seller = sellerRepository.findById(sellerId)
-                .orElseThrow(() -> new EntityNotFoundException("Seller not found"));
+                .orElseThrow(() -> new SellerNotFoundException("Seller not found"));
         Account account = seller.getAccount();
         if (account == null) {
             throw new IllegalStateException("Seller does not have an account");
@@ -40,7 +41,7 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public void withdraw(UUID sellerId, BigDecimal amount) {
         Seller seller = sellerRepository.findById(sellerId)
-                .orElseThrow(() -> new EntityNotFoundException("Seller not found"));
+                .orElseThrow(() -> new SellerNotFoundException("Seller not found"));
         Account account = seller.getAccount();
         if (account == null) {
             throw new IllegalStateException("Seller does not have an account");
@@ -57,7 +58,7 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public void deposit(UUID sellerId, BigDecimal amount) {
         Seller seller = sellerRepository.findById(sellerId)
-                .orElseThrow(() -> new EntityNotFoundException("Seller not found"));
+                .orElseThrow(() -> new SellerNotFoundException("Seller not found"));
         Account account = seller.getAccount();
         if (account == null) {
             throw new IllegalStateException("Seller does not have an account");
@@ -70,7 +71,7 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public AccountDTO createAccount(UUID sellerId, BigDecimal initialBalance) {
         Seller seller = sellerRepository.findById(sellerId)
-                .orElseThrow(() -> new EntityNotFoundException("Seller not found"));
+                .orElseThrow(() -> new SellerNotFoundException("Seller not found"));
 
         if (seller.getAccount() != null) {
             throw new IllegalStateException("Seller already has an account");
@@ -88,7 +89,7 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public void deleteAccount(UUID sellerId) {
         Seller seller = sellerRepository.findById(sellerId)
-                .orElseThrow(() -> new EntityNotFoundException("Seller not found"));
+                .orElseThrow(() -> new SellerNotFoundException("Seller not found"));
 
         if (seller.getAccount() == null) {
             throw new IllegalStateException("Seller does not have an account");
