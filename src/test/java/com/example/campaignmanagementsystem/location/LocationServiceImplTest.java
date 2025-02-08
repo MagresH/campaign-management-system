@@ -13,8 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,10 +29,14 @@ public class LocationServiceImplTest {
     private LocationServiceImpl locationService;
 
     private Location location;
+    private UUID locationId;
 
     @BeforeEach
     public void setUp() {
-        location = new Location(UUID.randomUUID(), "Warsaw");
+        locationId = UUID.randomUUID();
+        location = new Location();
+        location.setId(locationId);
+        location.setTown("Warsaw");
     }
 
     @Test
@@ -60,5 +63,28 @@ public class LocationServiceImplTest {
         List<String> result = locationService.getAllTowns();
         assertEquals(1, result.size());
         assertEquals("Warsaw", result.getFirst());
+    }
+
+    @Test
+    public void testGetLocationById_Found() {
+        Location location = Location.builder()
+                .id(locationId)
+                .town("Warsaw")
+                .build();
+        when(locationRepository.findById(locationId)).thenReturn(Optional.of(location));
+        when(locationMapper.toDto(location)).thenReturn(new LocationDTO(location.getId(), location.getTown()));
+        LocationDTO result = locationService.getLocationById(locationId);
+        assertNotNull(result);
+        assertEquals("Warsaw", result.town());
+    }
+
+    @Test
+    public void testGetLocationById_NotFound() {
+        UUID nonExistingId = UUID.randomUUID();
+        when(locationRepository.findById(nonExistingId)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            locationService.getLocationById(nonExistingId);
+        });
     }
 }

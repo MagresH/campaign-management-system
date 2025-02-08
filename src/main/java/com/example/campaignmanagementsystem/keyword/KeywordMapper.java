@@ -2,7 +2,7 @@ package com.example.campaignmanagementsystem.keyword;
 
 import org.mapstruct.*;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, injectionStrategy = InjectionStrategy.CONSTRUCTOR, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface KeywordMapper {
     Keyword toEntity(KeywordDTO keywordDto);
 

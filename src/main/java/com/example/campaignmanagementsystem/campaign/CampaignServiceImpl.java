@@ -31,7 +31,6 @@ import java.util.stream.Collectors;
 public class CampaignServiceImpl implements CampaignService {
 
     private final CampaignRepository campaignRepository;
-    private final CampaignMapper campaignMapper;
     private final KeywordService keywordService;
     private final AccountService accountService;
     private final ProductService productService;
@@ -41,6 +40,7 @@ public class CampaignServiceImpl implements CampaignService {
     private final LocationMapper locationMapper;
     private final ProductMapper productMapper;
     private final SellerMapper sellerMapper;
+    private final CampaignMapper campaignMapper;
 
     @Transactional
     public CampaignResponse createCampaign(CreateCampaignRequest request) {

@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface KeywordRepository extends JpaRepository<Keyword, UUID> {
 
-    Optional<Keyword> findByValueIgnoreCase(String value);
+    Optional<Keyword> findByTextIgnoreCase(String value);
 
-    List<Keyword> findByValueContainingIgnoreCase(String query);
+    List<Keyword> findByTextContainingIgnoreCase(String query);
 }

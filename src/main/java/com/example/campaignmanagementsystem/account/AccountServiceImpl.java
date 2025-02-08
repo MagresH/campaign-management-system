@@ -63,4 +63,34 @@ public class AccountServiceImpl implements AccountService {
         account.setBalance(newBalance);
         sellerRepository.save(seller);
     }
+
+    @Transactional
+    public Account createAccount(UUID sellerId, BigDecimal initialBalance) {
+        Seller seller = sellerRepository.findById(sellerId)
+                .orElseThrow(() -> new EntityNotFoundException("Seller not found"));
+
+        if (seller.getAccount() != null) {
+            throw new IllegalStateException("Seller already has an account");
+        }
+
+        Account account = new Account();
+        account.setBalance(initialBalance);
+        seller.setAccount(account);
+        sellerRepository.save(seller);
+
+        return account;
+    }
+
+    @Transactional
+    public void deleteAccount(UUID sellerId) {
+        Seller seller = sellerRepository.findById(sellerId)
+                .orElseThrow(() -> new EntityNotFoundException("Seller not found"));
+
+        if (seller.getAccount() == null) {
+            throw new IllegalStateException("Seller does not have an account");
+        }
+
+        seller.setAccount(null);
+        sellerRepository.save(seller);
+    }
 }

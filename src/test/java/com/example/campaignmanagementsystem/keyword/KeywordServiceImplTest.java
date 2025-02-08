@@ -32,7 +32,7 @@ public class KeywordServiceImplTest {
                 .id(UUID.randomUUID())
                 .text(value).build();
 
-        when(keywordRepository.findByValueIgnoreCase(value)).thenReturn(Optional.of(keyword));
+        when(keywordRepository.findByTextIgnoreCase(value)).thenReturn(Optional.of(keyword));
         when(keywordMapper.toDto(keyword)).thenReturn(new KeywordDTO(keyword.getId(), keyword.getText()));
 
         KeywordDTO result = keywordService.findOrCreateByValue(value);
@@ -46,7 +46,7 @@ public class KeywordServiceImplTest {
     @Test
     public void testFindOrCreateByValue_NewKeyword() {
         String value = "newKeyword";
-        when(keywordRepository.findByValueIgnoreCase(value)).thenReturn(Optional.empty());
+        when(keywordRepository.findByTextIgnoreCase(value)).thenReturn(Optional.empty());
 
         Keyword keyword = new Keyword();
         keyword.setText(value);

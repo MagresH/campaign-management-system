@@ -12,4 +12,8 @@ public interface AccountService {
     void withdraw(UUID sellerId, BigDecimal amount);
 
     boolean hasSufficientFunds(UUID sellerId, BigDecimal amount);
+
+    Account createAccount(UUID sellerId, BigDecimal initialBalance);
+
+    void deleteAccount(UUID sellerId);
 }

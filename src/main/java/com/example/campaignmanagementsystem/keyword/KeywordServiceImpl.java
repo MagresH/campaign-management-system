@@ -14,11 +14,12 @@ import java.util.stream.Collectors;
 public class KeywordServiceImpl implements KeywordService {
 
     private final KeywordRepository keywordRepository;
+
     private final KeywordMapper keywordMapper;
 
     @Transactional
     public KeywordDTO findOrCreateByValue(String value) {
-        Optional<Keyword> optionalKeyword = keywordRepository.findByValueIgnoreCase(value);
+        Optional<Keyword> optionalKeyword = keywordRepository.findByTextIgnoreCase(value);
         if (optionalKeyword.isPresent()) {
             return keywordMapper.toDto(optionalKeyword.get());
         } else {
@@ -37,7 +38,7 @@ public class KeywordServiceImpl implements KeywordService {
 
     @Transactional(readOnly = true)
     public List<String> getKeywordsByQuery(String query) {
-        List<Keyword> keywords = keywordRepository.findByValueContainingIgnoreCase(query);
+        List<Keyword> keywords = keywordRepository.findByTextContainingIgnoreCase(query);
         return keywords.stream()
                 .map(Keyword::getText)
                 .collect(Collectors.toList());
