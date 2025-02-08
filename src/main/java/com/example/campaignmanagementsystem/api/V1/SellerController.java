@@ -1,5 +1,6 @@
-package com.example.campaignmanagementsystem.seller;
+package com.example.campaignmanagementsystem.api.V1;
 
+import com.example.campaignmanagementsystem.seller.SellerDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/sellers")
+@RequestMapping("/v1/sellers")
 @Tag(name = "Seller", description = "Operations related to sellers")
 public interface SellerController {
 

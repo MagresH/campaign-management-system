@@ -1,5 +1,6 @@
-package com.example.campaignmanagementsystem.account;
+package com.example.campaignmanagementsystem.api.V1;
 
+import com.example.campaignmanagementsystem.account.Account;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -10,7 +11,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/accounts")
+@RequestMapping("/v1/accounts")
 @Tag(name = "Account", description = "Operations related to the seller's account")
 public interface AccountController {
 

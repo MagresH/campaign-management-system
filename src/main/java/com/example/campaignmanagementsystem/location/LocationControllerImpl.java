@@ -1,7 +1,9 @@
 package com.example.campaignmanagementsystem.location;
 
+import com.example.campaignmanagementsystem.api.V1.LocationController;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.util.List;
 import java.util.UUID;
 

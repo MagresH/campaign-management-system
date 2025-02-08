@@ -20,3 +20,7 @@ springdoc:
     enabled: true
 #    configUrl: /v3/api-docs/swagger-config
     path: /swagger-ui.html
+server:
+    port: 8080
+    servlet:
+        context-path: /api/

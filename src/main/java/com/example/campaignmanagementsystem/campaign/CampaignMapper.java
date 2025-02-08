@@ -23,15 +23,14 @@ public interface CampaignMapper {
     CampaignResponse toResponse(Campaign campaign);
 
     default Set<Keyword> mapKeywords(List<String> values) {
-        return values.stream().map(value -> {
-            Keyword keyword = new Keyword();
-            keyword.setText(value);
-            return keyword;
-        }).collect(Collectors.toSet());
+        return values.stream()
+                .map(Keyword::new)
+                .collect(Collectors.toSet());
     }
-
-    default List<String> mapKeywordsToStrings(Set<Keyword> keywords) {
-        return keywords.stream().map(Keyword::getText).collect(Collectors.toList());
-    }
+        default List<String> mapKeywordsToStrings(Set<Keyword> keywords) {
+            return keywords.stream()
+                    .map(Keyword::getText)
+                    .collect(Collectors.toList());
+}
 }
 

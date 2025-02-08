@@ -1,15 +1,17 @@
-package com.example.campaignmanagementsystem.product;
+package com.example.campaignmanagementsystem.api.V1;
 
+import com.example.campaignmanagementsystem.product.ProductDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("/v1/products")
 @Tag(name = "Product", description = "Operations related to products")
 public interface ProductController {
 

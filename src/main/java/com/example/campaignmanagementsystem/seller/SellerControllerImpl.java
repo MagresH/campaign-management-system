@@ -1,7 +1,9 @@
 package com.example.campaignmanagementsystem.seller;
 
+import com.example.campaignmanagementsystem.api.V1.SellerController;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.util.UUID;
 
 @RestController

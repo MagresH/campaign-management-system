@@ -5,12 +5,14 @@ import com.example.campaignmanagementsystem.seller.Seller;
 import com.example.campaignmanagementsystem.seller.SellerRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
@@ -74,10 +76,11 @@ public class AccountServiceImpl implements AccountService {
         }
 
         Account account = new Account();
+        account.setSeller(seller);
         account.setBalance(initialBalance);
         seller.setAccount(account);
-        sellerRepository.save(seller);
 
+        sellerRepository.save(seller);
         return account;
     }
 

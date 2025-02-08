@@ -1,5 +1,6 @@
 package com.example.campaignmanagementsystem.keyword;
 
+import com.example.campaignmanagementsystem.api.V1.KeywordController;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 

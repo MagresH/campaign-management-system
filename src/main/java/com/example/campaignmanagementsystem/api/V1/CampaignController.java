@@ -1,5 +1,8 @@
-package com.example.campaignmanagementsystem.campaign;
+package com.example.campaignmanagementsystem.api.V1;
 
+import com.example.campaignmanagementsystem.campaign.CampaignResponse;
+import com.example.campaignmanagementsystem.campaign.CreateCampaignRequest;
+import com.example.campaignmanagementsystem.campaign.UpdateCampaignRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -11,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/campaigns")
+@RequestMapping("/v1/campaigns")
 @Tag(name = "Campaign", description = "Operations related to campaigns")
 public interface CampaignController {
 

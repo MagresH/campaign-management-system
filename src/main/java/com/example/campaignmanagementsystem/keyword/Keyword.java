@@ -24,6 +24,10 @@ public class Keyword {
     @Column(name = "text", nullable = false, unique = true)
     private String text;
 
+    public Keyword(String value) {
+        this.text = value;
+    }
+
     public static KeywordBuilder builder() {
         return new KeywordBuilder();
     }

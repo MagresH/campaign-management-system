@@ -1,15 +1,17 @@
-package com.example.campaignmanagementsystem.keyword;
+package com.example.campaignmanagementsystem.api.V1;
 
+import com.example.campaignmanagementsystem.keyword.KeywordDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/keywords")
+@RequestMapping("/v1/keywords")
 @Tag(name = "Keyword", description = "Operations related to keywords")
 public interface KeywordController {
 

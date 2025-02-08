@@ -1,15 +1,17 @@
-package com.example.campaignmanagementsystem.location;
+package com.example.campaignmanagementsystem.api.V1;
 
+import com.example.campaignmanagementsystem.location.LocationDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/locations")
+@RequestMapping("/v1/locations")
 @Tag(name = "Location", description = "Operations related to locations")
 public interface LocationController {
 
