@@ -1,9 +1,9 @@
 package com.example.campaignmanagementsystem.account;
 
 import com.example.campaignmanagementsystem.exception.InsufficientFundsException;
+import com.example.campaignmanagementsystem.exception.SellerNotFoundException;
 import com.example.campaignmanagementsystem.seller.Seller;
 import com.example.campaignmanagementsystem.seller.SellerRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -68,7 +68,7 @@ public class AccountServiceImplTest {
     @Test
     public void testGetBalance_SellerNotFound() {
         when(sellerRepository.findById(sellerId)).thenReturn(Optional.empty());
-        assertThrows(EntityNotFoundException.class, () -> accountService.getBalanceBySellerId(sellerId));
+        assertThrows(SellerNotFoundException.class, () -> accountService.getBalanceBySellerId(sellerId));
     }
 
     @Test
@@ -97,14 +97,14 @@ public class AccountServiceImplTest {
     @Test
     public void testWithdraw_SellerNotFound() {
         when(sellerRepository.findById(sellerId)).thenReturn(Optional.empty());
-        assertThrows(EntityNotFoundException.class, () -> accountService.withdraw(sellerId, BigDecimal.valueOf(50.0)));
+        assertThrows(SellerNotFoundException.class, () -> accountService.withdraw(sellerId, BigDecimal.valueOf(50.0)));
         verify(sellerRepository, never()).save(any());
     }
 
     @Test
     public void testDeposit_SellerNotFound() {
         when(sellerRepository.findById(sellerId)).thenReturn(Optional.empty());
-        assertThrows(EntityNotFoundException.class, () -> accountService.deposit(sellerId, BigDecimal.valueOf(50.0)));
+        assertThrows(SellerNotFoundException.class, () -> accountService.deposit(sellerId, BigDecimal.valueOf(50.0)));
         verify(sellerRepository, never()).save(any());
     }
 }

@@ -1,20 +1,20 @@
 package com.example.campaignmanagementsystem.product;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import com.example.campaignmanagementsystem.exception.SellerNotFoundException;
 import com.example.campaignmanagementsystem.seller.Seller;
 import com.example.campaignmanagementsystem.seller.SellerRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mapstruct.factory.Mappers;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.util.*;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -65,7 +65,7 @@ public class ProductServiceImplTest {
                 "New Product",
                 "New Description",
                 BigDecimal.valueOf(49.99)
-                );
+        );
 
         when(productMapper.toEntity(productDTO)).thenAnswer(invocation -> {
             Product product = new Product();
@@ -113,7 +113,7 @@ public class ProductServiceImplTest {
                 "Updated Product",
                 "Updated Description",
                 BigDecimal.valueOf(79.99)
-                );
+        );
 
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
         when(productRepository.save(any(Product.class))).thenAnswer(invocation -> invocation.getArgument(0));
@@ -135,7 +135,8 @@ public class ProductServiceImplTest {
         assertEquals("Updated Description", result.description());
         assertEquals(BigDecimal.valueOf(79.99), result.price());
     }
-            @Test
+
+    @Test
     public void testUpdateProduct_ProductNotFound() {
         UUID nonExistingProductId = UUID.randomUUID();
         ProductDTO productDTO = new ProductDTO(
@@ -234,7 +235,7 @@ public class ProductServiceImplTest {
         UUID nonExistingSellerId = UUID.randomUUID();
         when(sellerRepository.findById(nonExistingSellerId)).thenReturn(Optional.empty());
 
-        assertThrows(EntityNotFoundException.class, () -> productService.getProductsBySellerId(nonExistingSellerId));
+        assertThrows(SellerNotFoundException.class, () -> productService.getProductsBySellerId(nonExistingSellerId));
 
         verify(sellerRepository).findById(nonExistingSellerId);
         verify(productRepository, never()).findBySellerId(any());

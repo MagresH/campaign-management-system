@@ -1,21 +1,27 @@
 package com.example.campaignmanagementsystem.location;
 
-import org.mapstruct.*;
+import org.springframework.stereotype.Service;
 
-@Mapper(
-        componentModel = MappingConstants.ComponentModel.SPRING,
-        unmappedTargetPolicy = ReportingPolicy.IGNORE
-)
-public interface LocationMapper {
+@Service
+public class LocationMapper {
 
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "town", source = "town")
-    Location toEntity(LocationDTO locationDTO);
+    public Location toEntity(LocationDTO locationDTO) {
+        if (locationDTO == null) {
+            return null;
+        }
+        Location location = new Location();
+        location.setId(locationDTO.id());
+        location.setTown(locationDTO.town());
+        return location;
+    }
 
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "town", source = "town")
-    LocationDTO toDto(Location location);
-
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Location partialUpdate(LocationDTO locationDTO, @MappingTarget Location location);
+    public LocationDTO toDto(Location location) {
+        if (location == null) {
+            return null;
+        }
+        return new LocationDTO(
+                location.getId(),
+                location.getTown()
+        );
+    }
 }

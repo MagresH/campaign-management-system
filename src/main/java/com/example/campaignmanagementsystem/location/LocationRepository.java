@@ -6,5 +6,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface LocationRepository extends JpaRepository<Location, UUID> {
-  Optional<Location> findByTownIgnoreCase(String town);
+    Optional<Location> findByTownIgnoreCase(String town);
 }

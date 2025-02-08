@@ -1,21 +1,27 @@
 package com.example.campaignmanagementsystem.account;
 
-import org.mapstruct.*;
+import org.springframework.stereotype.Service;
 
-@Mapper(
-        componentModel = MappingConstants.ComponentModel.SPRING,
-        unmappedTargetPolicy = ReportingPolicy.IGNORE
-)
-public interface AccountMapper {
+@Service
+public class AccountMapper {
 
-    @Mapping(target = "id", source = "id", ignore = true)
-    @Mapping(target = "balance", source = "balance")
-    Account toEntity(AccountDTO accountDTO);
+    public Account toEntity(AccountDTO accountDTO) {
+        if (accountDTO == null) {
+            return null;
+        }
+        Account account = new Account();
+        account.setId(accountDTO.id());
+        account.setBalance(accountDTO.balance());
+        return account;
+    }
 
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "balance", source = "balance")
-    AccountDTO toDto(Account account);
-
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Account partialUpdate(AccountDTO accountDTO, @MappingTarget Account account);
+    public AccountDTO toDto(Account account) {
+        if (account == null) {
+            return null;
+        }
+        return new AccountDTO(
+                account.getId(),
+                account.getBalance()
+        );
+    }
 }

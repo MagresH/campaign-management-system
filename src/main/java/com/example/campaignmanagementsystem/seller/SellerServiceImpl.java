@@ -1,7 +1,6 @@
 package com.example.campaignmanagementsystem.seller;
 
 import com.example.campaignmanagementsystem.exception.SellerNotFoundException;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

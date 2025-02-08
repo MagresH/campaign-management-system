@@ -1,6 +1,5 @@
 package com.example.campaignmanagementsystem.api.V1;
 
-import com.example.campaignmanagementsystem.account.Account;
 import com.example.campaignmanagementsystem.account.AccountDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

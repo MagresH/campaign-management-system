@@ -50,44 +50,44 @@ public class Product {
         return this.id;
     }
 
-    public String getName() {
-        return this.name;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public BigDecimal getPrice() {
-        return this.price;
-    }
-
-    public Seller getSeller() {
-        return this.seller;
-    }
-
-    public List<Campaign> getCampaigns() {
-        return this.campaigns;
-    }
-
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return this.name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
+    public String getDescription() {
+        return this.description;
+    }
+
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public BigDecimal getPrice() {
+        return this.price;
     }
 
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
+    public Seller getSeller() {
+        return this.seller;
+    }
+
     public void setSeller(Seller seller) {
         this.seller = seller;
+    }
+
+    public List<Campaign> getCampaigns() {
+        return this.campaigns;
     }
 
     public void setCampaigns(List<Campaign> campaigns) {

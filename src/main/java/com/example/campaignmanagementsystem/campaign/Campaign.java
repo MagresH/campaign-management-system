@@ -75,6 +75,10 @@ public class Campaign {
         return new CampaignBuilder();
     }
 
+    public String getTown() {
+        return location.getTown();
+    }
+
     public static class CampaignBuilder {
         private UUID id;
         private @NotBlank(message = "Campaign name is mandatory") String name;
@@ -150,8 +154,5 @@ public class Campaign {
         public String toString() {
             return "Campaign.CampaignBuilder(id=" + this.id + ", name=" + this.name + ", bidAmount=" + this.bidAmount + ", campaignFund=" + this.campaignFund + ", status=" + this.status + ", location=" + this.location + ", radius=" + this.radius + ", keywords=" + this.keywords + ", product=" + this.product + ", seller=" + this.seller + ")";
         }
-    }
-    public String getTown() {
-        return location.getTown();
     }
 }

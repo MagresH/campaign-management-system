@@ -1,11 +1,12 @@
 package com.example.campaignmanagementsystem.seller;
 
 
-import jakarta.persistence.EntityNotFoundException;
+import com.example.campaignmanagementsystem.exception.SellerNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
@@ -98,7 +99,7 @@ public class SellerServiceImplTest {
 
         when(sellerRepository.findById(nonExistingSellerId)).thenReturn(Optional.empty());
 
-        assertThrows(EntityNotFoundException.class, () -> sellerService.updateSeller(nonExistingSellerId, sellerDTO));
+        assertThrows(SellerNotFoundException.class, () -> sellerService.updateSeller(nonExistingSellerId, sellerDTO));
 
         verify(sellerRepository).findById(nonExistingSellerId);
         verify(sellerRepository, never()).save(any(Seller.class));
@@ -126,7 +127,7 @@ public class SellerServiceImplTest {
         UUID nonExistingSellerId = UUID.randomUUID();
         when(sellerRepository.findById(nonExistingSellerId)).thenReturn(Optional.empty());
 
-        assertThrows(EntityNotFoundException.class, () -> sellerService.getSellerById(nonExistingSellerId));
+        assertThrows(SellerNotFoundException.class, () -> sellerService.getSellerById(nonExistingSellerId));
 
         verify(sellerRepository).findById(nonExistingSellerId);
     }
@@ -147,7 +148,7 @@ public class SellerServiceImplTest {
         UUID nonExistingSellerId = UUID.randomUUID();
         when(sellerRepository.findById(nonExistingSellerId)).thenReturn(Optional.empty());
 
-        assertThrows(EntityNotFoundException.class, () -> sellerService.deleteSeller(nonExistingSellerId));
+        assertThrows(SellerNotFoundException.class, () -> sellerService.deleteSeller(nonExistingSellerId));
 
         verify(sellerRepository).findById(nonExistingSellerId);
         verify(sellerRepository, never()).delete(any(Seller.class));

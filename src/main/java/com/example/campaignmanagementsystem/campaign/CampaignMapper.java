@@ -7,74 +7,66 @@ import com.example.campaignmanagementsystem.product.Product;
 import com.example.campaignmanagementsystem.product.ProductService;
 import com.example.campaignmanagementsystem.seller.Seller;
 import com.example.campaignmanagementsystem.seller.SellerService;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Component
-@Mapper(componentModel = "spring")
-public abstract class CampaignMapper {
+@Service
+@RequiredArgsConstructor
+public class CampaignMapper {
+    private final LocationService locationService;
+    private final ProductService productService;
+    private final SellerService sellerService;
 
-    @Autowired
-    protected LocationService locationService;
+    public Campaign toEntity(CreateCampaignRequest request) {
+        Campaign campaign = new Campaign();
+        campaign.setKeywords(mapKeywords(request.keywords()));
+        campaign.setLocation(getLocationByTown(request.town()));
+        campaign.setProduct(getProductById(request.productId()));
+        campaign.setSeller(getSellerById(request.sellerId()));
+        return campaign;
+    }
 
-    @Autowired
-    protected ProductService productService;
+    public CampaignResponse toResponse(Campaign campaign) {
+        return new CampaignResponse(
+                campaign.getId(),
+                campaign.getName(),
+                campaign.getBidAmount(),
+                campaign.getCampaignFund(),
+                campaign.getStatus(),
+                campaign.getRadius(),
+                campaign.getLocation().getTown(),
+                mapKeywordsToStrings(campaign.getKeywords()),
+                campaign.getProduct().getId(),
+                getSellerById(campaign.getSeller().getId()).getId()
+        );
+    }
 
-    @Autowired
-    protected SellerService sellerService;
-
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "keywords", expression = "java(mapKeywords(request.keywords()))")
-    @Mapping(target = "location", expression = "java(getLocationByTown(request.town()))")
-    @Mapping(target = "product", expression = "java(getProductById(request.productId()))")
-    @Mapping(target = "seller", expression = "java(getSellerById(request.sellerId()))")
-    public abstract Campaign toEntity(CreateCampaignRequest request);
-
-    @Mapping(target = "keywords", expression = "java(mapKeywordsToStrings(campaign.getKeywords()))")
-    @Mapping(target = "town", expression = "java(getTownByLocationTown(campaign.getLocation().getTown()))")
-    @Mapping(target = "productId", expression = "java(getProductId(campaign.getProduct()))")
-    @Mapping(target = "sellerId", expression = "java(campaign.getSeller().getId())")
-    public abstract CampaignResponse toResponse(Campaign campaign);
-
-    protected Set<Keyword> mapKeywords(List<String> values) {
+    private Set<Keyword> mapKeywords(List<String> values) {
         return values.stream()
                 .map(Keyword::new)
                 .collect(Collectors.toSet());
     }
 
-    protected List<String> mapKeywordsToStrings(Set<Keyword> keywords) {
+    private List<String> mapKeywordsToStrings(Set<Keyword> keywords) {
         return keywords.stream()
                 .map(Keyword::getText)
                 .collect(Collectors.toList());
     }
-    protected UUID getProductId(UUID productId) {
-        return productId;
-    }
 
-    protected UUID getProductId(Product product) {
-        return product.getId();
-    }
-
-    protected String getTownByLocationTown(String town) {
-        return town;
-    }
-
-    protected Location getLocationByTown(String town) {
+    private Location getLocationByTown(String town) {
         return locationService.getLocationEntityByTown(town);
     }
 
-    protected Product getProductById(UUID productId) {
+    private Product getProductById(UUID productId) {
         return productService.getProductEntityById(productId);
     }
 
-    protected Seller getSellerById(UUID sellerId) {
+    private Seller getSellerById(UUID sellerId) {
         return sellerService.getSellerEntityById(sellerId);
     }
 }

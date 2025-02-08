@@ -1,24 +1,28 @@
 package com.example.campaignmanagementsystem.seller;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants;
-import org.mapstruct.ReportingPolicy;
+import org.springframework.stereotype.Service;
 
-@Mapper(
-        componentModel = MappingConstants.ComponentModel.SPRING,
-        unmappedTargetPolicy = ReportingPolicy.IGNORE
-)
-public interface SellerMapper {
+@Service
+public class SellerMapper {
 
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "name", source = "name")
-    @Mapping(target = "account", ignore = true)
-    @Mapping(target = "products", ignore = true)
-    Seller toEntity(SellerDTO sellerDto);
+    public Seller toEntity(SellerDTO sellerDto) {
+        if (sellerDto == null) {
+            return null;
+        }
+        Seller seller = new Seller();
+        seller.setId(sellerDto.id());
+        seller.setName(sellerDto.name());
+        return seller;
+    }
 
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "name", source = "name")
-    SellerDTO toDto(Seller seller);
+    public SellerDTO toDto(Seller seller) {
+        if (seller == null) {
+            return null;
+        }
+        return new SellerDTO(
+                seller.getId(),
+                seller.getName()
+        );
+    }
 
 }

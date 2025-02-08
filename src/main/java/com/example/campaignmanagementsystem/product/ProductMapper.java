@@ -1,12 +1,30 @@
 package com.example.campaignmanagementsystem.product;
 
-import org.mapstruct.*;
+import org.springframework.stereotype.Service;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)public interface ProductMapper {
+@Service
+public class ProductMapper {
 
-    Product toEntity(ProductDTO productDTO);
+    public Product toEntity(ProductDTO productDTO) {
+        if (productDTO == null) {
+            return null;
+        }
+        Product product = new Product();
+        product.setId(productDTO.id());
+        product.setName(productDTO.name());
+        product.setPrice(productDTO.price());
+        return product;
+    }
 
-    ProductDTO toDto(Product product);
-
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)Product partialUpdate(ProductDTO productDto, @MappingTarget Product product);
+    public ProductDTO toDto(Product product) {
+        if (product == null) {
+            return null;
+        }
+        return new ProductDTO(
+                product.getId(),
+                product.getName(),
+                product.getDescription(),
+                product.getPrice()
+        );
+    }
 }

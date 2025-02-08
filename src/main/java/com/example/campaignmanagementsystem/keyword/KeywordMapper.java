@@ -1,18 +1,28 @@
 package com.example.campaignmanagementsystem.keyword;
 
-import org.mapstruct.*;
+import org.springframework.stereotype.Service;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, injectionStrategy = InjectionStrategy.CONSTRUCTOR, componentModel = MappingConstants.ComponentModel.SPRING)
-public interface KeywordMapper {
+@Service
+public class KeywordMapper {
 
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "text", source = "text")
-    Keyword toEntity(KeywordDTO keywordDto);
+    public Keyword toEntity(KeywordDTO keywordDto) {
+        if (keywordDto == null) {
+            return null;
+        }
+        Keyword keyword = new Keyword();
+        keyword.setId(keywordDto.id());
+        keyword.setText(keywordDto.text());
+        return keyword;
+    }
 
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "text", source = "text")
-    KeywordDTO toDto(Keyword keyword);
+    public KeywordDTO toDto(Keyword keyword) {
+        if (keyword == null) {
+            return null;
+        }
+        return new KeywordDTO(
+                keyword.getId(),
+                keyword.getText()
+        );
+    }
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Keyword partialUpdate(KeywordDTO keywordDto, @MappingTarget Keyword keyword);
 }

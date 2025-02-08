@@ -160,89 +160,89 @@ public class CampaignServiceImplTest {
     }
 
 
-@Test
-public void testCreateCampaign_Success() {
-    UUID sellerId = UUID.randomUUID();
-    UUID productId = UUID.randomUUID();
+    @Test
+    public void testCreateCampaign_Success() {
+        UUID sellerId = UUID.randomUUID();
+        UUID productId = UUID.randomUUID();
 
-    CreateCampaignRequest request = new CreateCampaignRequest(
-            "Test Campaign",
-            BigDecimal.valueOf(1.0),
-            BigDecimal.valueOf(100.0),
-            CampaignStatus.ON,
-            10,
-            "Warsaw",
-            Collections.singletonList("keyword1"),
-            productId,
-            sellerId
-    );
-
-    SellerDTO seller = new SellerDTO(sellerId, "Seller");
-    ProductDTO product = new ProductDTO(productId, "Product", "Description", BigDecimal.valueOf(10.0));
-    KeywordDTO keyword = new KeywordDTO(UUID.randomUUID(), "keyword1");
-    LocationDTO location = new LocationDTO(UUID.randomUUID(), "Warsaw");
-
-    when(sellerService.getSellerById(sellerId)).thenReturn(seller);
-    when(productService.getProductById(productId)).thenReturn(product);
-    when(accountService.hasSufficientFunds(sellerId, request.campaignFund())).thenReturn(true);
-    doNothing().when(accountService).withdraw(sellerId, request.campaignFund());
-    when(keywordService.findOrCreateByValue("keyword1")).thenReturn(keyword);
-    when(locationService.getLocationByTown("Warsaw")).thenReturn(location);
-
-    when(sellerMapper.toEntity(seller)).thenReturn(
-            Seller.builder()
-                    .id(sellerId)
-                    .name("Seller")
-                    .account(new Account())
-                    .build()
-    );
-    when(productMapper.toEntity(product)).thenReturn(Product.builder()
-            .id(productId)
-            .name("Product")
-            .description("Description")
-            .price(BigDecimal.valueOf(10.0))
-            .build());
-    when(locationMapper.toEntity(location)).thenReturn(new Location(UUID.randomUUID(), "Warsaw"));
-    when(keywordMapper.toEntity(keyword)).thenReturn(new Keyword());
-
-    when(campaignRepository.save(any(Campaign.class))).thenAnswer(invocation -> {
-        Campaign campaign = invocation.getArgument(0);
-        campaign.setId(UUID.randomUUID());
-        return campaign;
-    });
-
-    when(campaignMapper.toResponse(any(Campaign.class))).thenAnswer(invocation -> {
-        Campaign campaign = invocation.getArgument(0);
-        return new CampaignResponse(
-                campaign.getId(),
-                campaign.getName(),
-                campaign.getBidAmount(),
-                campaign.getCampaignFund(),
-                campaign.getStatus(),
-                campaign.getRadius(),
-                campaign.getLocation().getTown(),
-                campaign.getKeywords().stream()
-                        .map(Keyword::getText)
-                        .collect(Collectors.toList()),
-                campaign.getProduct().getId(),
-                campaign.getSeller().getId()
+        CreateCampaignRequest request = new CreateCampaignRequest(
+                "Test Campaign",
+                BigDecimal.valueOf(1.0),
+                BigDecimal.valueOf(100.0),
+                CampaignStatus.ON,
+                10,
+                "Warsaw",
+                Collections.singletonList("keyword1"),
+                productId,
+                sellerId
         );
-    });
 
-    CampaignResponse response = campaignService.createCampaign(request);
+        SellerDTO seller = new SellerDTO(sellerId, "Seller");
+        ProductDTO product = new ProductDTO(productId, "Product", "Description", BigDecimal.valueOf(10.0));
+        KeywordDTO keyword = new KeywordDTO(UUID.randomUUID(), "keyword1");
+        LocationDTO location = new LocationDTO(UUID.randomUUID(), "Warsaw");
 
-    assertNotNull(response);
-    assertEquals(request.name(), response.name());
-    assertEquals(request.bidAmount(), response.bidAmount());
-    assertEquals(request.campaignFund(), response.campaignFund());
-    assertEquals(request.status(), response.status());
-    assertEquals(request.radius(), response.radius());
-    assertEquals(request.town(), response.town());
-    assertEquals(request.productId(), response.productId());
-    assertEquals(request.sellerId(), response.sellerId());
+        when(sellerService.getSellerById(sellerId)).thenReturn(seller);
+        when(productService.getProductById(productId)).thenReturn(product);
+        when(accountService.hasSufficientFunds(sellerId, request.campaignFund())).thenReturn(true);
+        doNothing().when(accountService).withdraw(sellerId, request.campaignFund());
+        when(keywordService.findOrCreateByValue("keyword1")).thenReturn(keyword);
+        when(locationService.getLocationByTown("Warsaw")).thenReturn(location);
 
-    verify(accountService, times(1)).hasSufficientFunds(sellerId, request.campaignFund());
-    verify(accountService, times(1)).withdraw(sellerId, request.campaignFund());
-    verify(campaignRepository, times(1)).save(any(Campaign.class));
-}
+        when(sellerMapper.toEntity(seller)).thenReturn(
+                Seller.builder()
+                        .id(sellerId)
+                        .name("Seller")
+                        .account(new Account())
+                        .build()
+        );
+        when(productMapper.toEntity(product)).thenReturn(Product.builder()
+                .id(productId)
+                .name("Product")
+                .description("Description")
+                .price(BigDecimal.valueOf(10.0))
+                .build());
+        when(locationMapper.toEntity(location)).thenReturn(new Location(UUID.randomUUID(), "Warsaw"));
+        when(keywordMapper.toEntity(keyword)).thenReturn(new Keyword());
+
+        when(campaignRepository.save(any(Campaign.class))).thenAnswer(invocation -> {
+            Campaign campaign = invocation.getArgument(0);
+            campaign.setId(UUID.randomUUID());
+            return campaign;
+        });
+
+        when(campaignMapper.toResponse(any(Campaign.class))).thenAnswer(invocation -> {
+            Campaign campaign = invocation.getArgument(0);
+            return new CampaignResponse(
+                    campaign.getId(),
+                    campaign.getName(),
+                    campaign.getBidAmount(),
+                    campaign.getCampaignFund(),
+                    campaign.getStatus(),
+                    campaign.getRadius(),
+                    campaign.getLocation().getTown(),
+                    campaign.getKeywords().stream()
+                            .map(Keyword::getText)
+                            .collect(Collectors.toList()),
+                    campaign.getProduct().getId(),
+                    campaign.getSeller().getId()
+            );
+        });
+
+        CampaignResponse response = campaignService.createCampaign(request);
+
+        assertNotNull(response);
+        assertEquals(request.name(), response.name());
+        assertEquals(request.bidAmount(), response.bidAmount());
+        assertEquals(request.campaignFund(), response.campaignFund());
+        assertEquals(request.status(), response.status());
+        assertEquals(request.radius(), response.radius());
+        assertEquals(request.town(), response.town());
+        assertEquals(request.productId(), response.productId());
+        assertEquals(request.sellerId(), response.sellerId());
+
+        verify(accountService, times(1)).hasSufficientFunds(sellerId, request.campaignFund());
+        verify(accountService, times(1)).withdraw(sellerId, request.campaignFund());
+        verify(campaignRepository, times(1)).save(any(Campaign.class));
+    }
 }
