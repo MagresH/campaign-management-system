@@ -48,7 +48,7 @@ public class CampaignMapper {
 
     private Set<Keyword> mapKeywords(List<String> values) {
         return values.stream()
-                .map(Keyword::new)
+                .map(text -> Keyword.builder().text(text).build())
                 .collect(Collectors.toSet());
     }
 

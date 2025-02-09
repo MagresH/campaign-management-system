@@ -46,6 +46,7 @@ public class CampaignServiceImpl implements CampaignService {
 
     @Transactional
     public CampaignResponse createCampaign(CreateCampaignRequest request) {
+        log.info("Creating campaign with request: {}", request);
         SellerDTO seller = sellerService.getSellerById(request.sellerId());
 
         ProductDTO product = productService.getProductById(request.productId());
@@ -57,8 +58,12 @@ public class CampaignServiceImpl implements CampaignService {
         UUID sellerId = seller.id();
 
         if (!accountService.hasSufficientFunds(sellerId, campaignFund)) {
+            log.error("Insufficient funds for seller: {}", sellerId);
             throw new InsufficientFundsException("Insufficient funds");
-        } else accountService.withdraw(sellerId, campaignFund);
+        } else {
+            accountService.withdraw(sellerId, campaignFund);
+            log.info("Withdrawn {} from seller {}'s account", campaignFund, sellerId);
+        }
 
         Set<KeywordDTO> keywords = request.keywords().stream()
                 .map(keywordService::findOrCreateByValue)
@@ -79,23 +84,27 @@ public class CampaignServiceImpl implements CampaignService {
                 .build();
 
         Campaign savedCampaign = campaignRepository.save(campaign);
+        log.info("Campaign created: {}", savedCampaign);
 
         return campaignMapper.toResponse(savedCampaign);
-
     }
 
     @Transactional
     public CampaignResponse updateCampaign(UpdateCampaignRequest request) {
+        log.info("Updating campaign with ID: {}", request.getId());
         Campaign existingCampaign = campaignRepository.findById(request.getId())
-                .orElseThrow(() -> new EntityNotFoundException("Campaign not found"));
+                .orElseThrow(() -> {
+                    log.error("Campaign not found with ID: {}", request.getId());
+                    return new EntityNotFoundException("Campaign not found");
+                });
 
-        SellerDTO seller = null;
+        SellerDTO seller;
         if (request.getSellerId() != null) {
             seller = sellerService.getSellerById(request.getSellerId());
             existingCampaign.setSeller(sellerMapper.toEntity(seller));
         }
 
-        ProductDTO product = null;
+        ProductDTO product;
         if (request.getProductId() != null) {
             product = productService.getProductById(request.getProductId());
             existingCampaign.setProduct(productMapper.toEntity(product));
@@ -125,11 +134,14 @@ public class CampaignServiceImpl implements CampaignService {
 
             if (difference.compareTo(BigDecimal.ZERO) > 0) {
                 if (!accountService.hasSufficientFunds(sellerId, difference)) {
+                    log.error("Insufficient funds for seller: {}", sellerId);
                     throw new InsufficientFundsException("Insufficient funds");
                 }
                 accountService.withdraw(sellerId, difference);
+                log.info("Withdrawn {} from seller {}'s account", difference, sellerId);
             } else if (difference.compareTo(BigDecimal.ZERO) < 0) {
                 accountService.deposit(sellerId, difference.abs());
+                log.info("Deposited {} to seller {}'s account", difference.abs(), sellerId);
             }
             existingCampaign.setCampaignFund(request.getCampaignFund());
         }
@@ -144,36 +156,54 @@ public class CampaignServiceImpl implements CampaignService {
         }
 
         Campaign savedCampaign = campaignRepository.save(existingCampaign);
+        log.info("Campaign updated: {}", savedCampaign);
 
         return campaignMapper.toResponse(savedCampaign);
     }
 
     @Transactional
     public void deleteCampaign(UUID campaignId) {
+        log.info("Deleting campaign with ID: {}", campaignId);
         Campaign campaign = campaignRepository.findById(campaignId)
-                .orElseThrow(() -> new IllegalArgumentException("Campaign not found"));
+                .orElseThrow(() -> {
+                    log.error("Campaign not found with ID: {}", campaignId);
+                    return new IllegalArgumentException("Campaign not found");
+                });
 
         accountService.deposit(campaign.getSeller().getId(), campaign.getCampaignFund());
+        log.info("Deposited {} back to seller {}'s account", campaign.getCampaignFund(), campaign.getSeller().getId());
 
         campaignRepository.delete(campaign);
+        log.info("Campaign deleted: {}", campaignId);
     }
 
     @Transactional(readOnly = true)
     public CampaignResponse getCampaignById(UUID campaignId) {
+        log.info("Fetching campaign with ID: {}", campaignId);
         Campaign campaign = campaignRepository.findById(campaignId)
-                .orElseThrow(() -> new IllegalArgumentException("Campaign not found"));
+                .orElseThrow(() -> {
+                    log.error("Campaign not found with ID: {}", campaignId);
+                    return new IllegalArgumentException("Campaign not found");
+                });
+        log.info("Fetched campaign: {}", campaign);
         return campaignMapper.toResponse(campaign);
     }
 
     @Transactional(readOnly = true)
     public Page<CampaignResponse> getAllCampaigns(Pageable pageable) {
-        return campaignRepository.findAll(pageable)
+        log.info("Fetching all campaigns with pageable: {}", pageable);
+        Page<CampaignResponse> response = campaignRepository.findAll(pageable)
                 .map(campaignMapper::toResponse);
+        log.info("Fetched all campaigns");
+        return response;
     }
 
     @Transactional(readOnly = true)
     public Page<CampaignResponse> getCampaignsBySellerId(UUID sellerId, Pageable pageable) {
-        return campaignRepository.findBySellerId(sellerId, pageable)
+        log.info("Fetching campaigns for seller ID: {} with pageable: {}", sellerId, pageable);
+        Page<CampaignResponse> response = campaignRepository.findBySellerId(sellerId, pageable)
                 .map(campaignMapper::toResponse);
+        log.info("Fetched campaigns for seller ID: {}", sellerId);
+        return response;
     }
 }
